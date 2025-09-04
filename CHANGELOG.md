@@ -105,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## How to Contribute
 
 1. Check the [Contributing Guide](CONTRIBUTING.md)
-2. Look at [Open Issues](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues)
+2. Look at [Open Issues](https://github.com/Jainam1673/mojo-weather-pipeline/issues)
 3. Follow the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Release Process

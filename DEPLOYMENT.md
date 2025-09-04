@@ -31,7 +31,7 @@ Before deploying, ensure you have:
 ### Quick Setup
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/mojo-weather-pipeline.git
+git clone https://github.com/Jainam1673/mojo-weather-pipeline.git
 cd mojo-weather-pipeline
 
 # Run automated setup
@@ -175,7 +175,7 @@ gcloud compute instances create weather-pipeline \
 gcloud compute ssh weather-pipeline
 
 # Setup application
-git clone https://github.com/YOUR_USERNAME/mojo-weather-pipeline.git
+git clone https://github.com/Jainam1673/mojo-weather-pipeline.git
 cd mojo-weather-pipeline
 ./setup.sh
 ./start_pipeline.sh
@@ -411,4 +411,4 @@ curl "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&curr
 
 ---
 
-**For additional deployment support, please check our [GitHub Issues](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues) or create a new issue.**
+**For additional deployment support, please check our [GitHub Issues](https://github.com/Jainam1673/mojo-weather-pipeline/issues) or create a new issue.**

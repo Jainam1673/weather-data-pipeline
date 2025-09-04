@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the Mojo Weather Data Pipeline! T
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/mojo-weather-pipeline.git
+   git clone https://github.com/Jainam1673/mojo-weather-pipeline.git
    cd mojo-weather-pipeline
    ```
 3. **Set up the development environment**:

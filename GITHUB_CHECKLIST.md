@@ -107,7 +107,8 @@ Your Mojo Weather Data Pipeline is now **100% ready** for GitHub as a public rep
 cd /home/jainam-jadav/Projects/life
 
 # Add remote (replace YOUR_USERNAME with your GitHub username)
-git remote add origin https://github.com/YOUR_USERNAME/mojo-weather-pipeline.git
+   # Add your GitHub remote (replace YOUR_USERNAME)
+   git remote add origin https://github.com/Jainam1673/mojo-weather-pipeline.git
 
 # Push to GitHub
 git branch -M main

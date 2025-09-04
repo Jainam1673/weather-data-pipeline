@@ -1,6 +1,6 @@
 # 🌤️ Mojo Weather Data Pipeline - Open-Meteo Integration
 
-[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/actions)
+[![CI/CD Pipeline](https://github.com/Jainam1673/mojo-weather-pipeline/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/Jainam1673/mojo-weather-pipeline/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Mojo](https://img.shields.io/badge/Mojo-25.6+-red.svg)](https://docs.modular.com/mojo/)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
@@ -700,7 +700,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ### Development Setup
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/mojo-weather-pipeline.git
+git clone https://github.com/Jainam1673/mojo-weather-pipeline.git
 cd mojo-weather-pipeline
 
 # Setup development environment
@@ -722,13 +722,13 @@ cd mojo-weather-pipeline
 - ✅ Production-ready deployment scripts
 
 ### Roadmap
-See our [GitHub Issues](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues) for planned features and improvements.
+See our [GitHub Issues](https://github.com/Jainam1673/mojo-weather-pipeline/issues) for planned features and improvements.
 
 ## 🐛 Bug Reports & 💡 Feature Requests
 
-- **Bug Reports**: [Create a bug report](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues/new?template=bug_report.md)
-- **Feature Requests**: [Request a feature](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues/new?template=feature_request.md)
-- **Performance Issues**: [Report performance problems](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues/new?template=performance.md)
+- **Bug Reports**: [Create a bug report](https://github.com/Jainam1673/mojo-weather-pipeline/issues/new?template=bug_report.md)
+- **Feature Requests**: [Request a feature](https://github.com/Jainam1673/mojo-weather-pipeline/issues/new?template=feature_request.md)
+- **Performance Issues**: [Report performance problems](https://github.com/Jainam1673/mojo-weather-pipeline/issues/new?template=performance.md)
 
 ## � Security
 
@@ -736,9 +736,9 @@ If you discover any security vulnerabilities, please see our [Security Policy](S
 
 ## 📊 Project Statistics
 
-![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/mojo-weather-pipeline?style=social)
-![GitHub forks](https://img.shields.io/github/forks/YOUR_USERNAME/mojo-weather-pipeline?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/YOUR_USERNAME/mojo-weather-pipeline?style=social)
+![GitHub stars](https://img.shields.io/github/stars/Jainam1673/mojo-weather-pipeline?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Jainam1673/mojo-weather-pipeline?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/Jainam1673/mojo-weather-pipeline?style=social)
 
 ## �📄 License
 
@@ -757,8 +757,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support & Community
 
 - **Documentation**: Check our comprehensive [README](README.md) and [Contributing Guide](CONTRIBUTING.md)
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/mojo-weather-pipeline/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Jainam1673/mojo-weather-pipeline/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Jainam1673/mojo-weather-pipeline/discussions)
 - **Code of Conduct**: [Community Guidelines](CODE_OF_CONDUCT.md)
 
 ---
