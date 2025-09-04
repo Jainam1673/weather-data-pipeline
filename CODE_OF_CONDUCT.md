@@ -57,7 +57,7 @@ This Code of Conduct applies within all project spaces, and it also applies when
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at jainam.jadav@example.com. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team through GitHub Issues or Discussions. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
 
 Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
@@ -72,7 +72,7 @@ For answers to common questions about this code of conduct, see https://www.cont
 If you have questions about this Code of Conduct, please reach out to the project maintainers through:
 
 - GitHub Issues (for general questions)
-- Email: jainam.jadav@example.com (for sensitive matters)
 - GitHub Discussions (for community topics)
+- Direct message to repository maintainers
 
 Thank you for helping make the Mojo Weather Data Pipeline a welcoming place for everyone! 🌤️🔥

@@ -16,7 +16,7 @@ If you discover a security vulnerability in the Mojo Weather Data Pipeline, plea
 ### Reporting Process
 
 1. **DO NOT** create a public issue for security vulnerabilities
-2. Email security reports to: jainam.jadav@example.com (replace with actual email)
+2. Email security reports to: security@[repository-domain].com
 3. Include the following information:
    - Description of the vulnerability
    - Steps to reproduce
@@ -77,6 +77,6 @@ When deploying or modifying this application:
 
 For security-related questions or concerns, please contact:
 - GitHub Issues: For non-security bugs
-- Email: jainam.jadav@example.com for security vulnerabilities
+- Email: Create an issue for security vulnerabilities (we'll provide contact details privately)
 
 Thank you for helping keep the Mojo Weather Data Pipeline secure!

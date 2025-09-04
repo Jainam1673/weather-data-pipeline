@@ -2,7 +2,12 @@
 
 ## ✅ **COMPLETE - Ready for GitHub Publication**
 
-Your Mojo Weather Data Pipeline is now **100% ready** for GitHub as a public repository with MIT license!
+Your Mojo ### 2. **Push to GitHub:**
+```bash
+cd mojo-weather-pipeline
+
+   # Add your GitHub remote
+   git remote add origin https://github.com/Jainam1673/mojo-weather-pipeline.git Pipeline is now **100% ready** for GitHub as a public repository with MIT license!
 
 ## 📋 Pre-Publication Checklist
 
@@ -104,10 +109,10 @@ Your Mojo Weather Data Pipeline is now **100% ready** for GitHub as a public rep
 
 ### 2. **Push to GitHub**
 ```bash
-cd /home/jainam-jadav/Projects/life
+cd mojo-weather-pipeline
 
-# Add remote (replace YOUR_USERNAME with your GitHub username)
-   # Add your GitHub remote (replace YOUR_USERNAME)
+# Add remote 
+git remote add origin https://github.com/Jainam1673/mojo-weather-pipeline.git
    git remote add origin https://github.com/Jainam1673/mojo-weather-pipeline.git
 
 # Push to GitHub

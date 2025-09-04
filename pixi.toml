@@ -1,5 +1,5 @@
 [workspace]
-authors = ["Jainam1673 <jainamjadav1673@gmail.com>"]
+authors = ["Jainam1673"]
 channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
 name = "🔥 Mojo Weather Data Pipeline"
 platforms = ["linux-64"]

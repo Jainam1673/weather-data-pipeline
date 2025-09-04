@@ -49,11 +49,10 @@ test_command "mojo --version" "Mojo compiler availability"
 echo "2. Testing Pixi Environment"
 echo "============================"
 test_command "pixi --version" "Pixi package manager"
-test_command "cd /home/jainam-jadav/Projects/life && pixi info" "Project environment"
+test_command "pixi info" "Project environment"
 
 echo "3. Testing Mojo Data Processor"
 echo "==============================="
-cd /home/jainam-jadav/Projects/life
 test_command "pixi run test-mojo" "Mojo weather data processor"
 
 echo "4. Testing Database Operations"
