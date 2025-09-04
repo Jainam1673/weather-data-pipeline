@@ -164,11 +164,13 @@ graph TB
     API --> UI
     DB --> UI
     
-    style OM fill:#e1f5fe
-    style MP fill:#ffebee
-    style API fill:#f3e5f5
-    style DB fill:#e8f5e8
-    style UI fill:#fff3e0
+    style OM fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000000
+    style MP fill:#ffebee,stroke:#c62828,stroke-width:2px,color:#000000
+    style API fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000000
+    style DB fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#000000
+    style UI fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#000000
+    
+    classDef default color:#000000,fill:#ffffff,stroke:#333333
 ```
 
 **Data Flow:**
