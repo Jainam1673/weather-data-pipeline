@@ -208,6 +208,36 @@ Thumbs.db
 .env.secret
 secrets/
 config/secrets.py
+*.key
+*.pem
 
 # Runtime files
 *.pid
+
+# Advanced Weather Pipeline Specific
+# ==================================
+
+# Pixi Environment (keep config files)
+.pixi/
+*.pixi
+
+# Mojo Build Artifacts
+*.mojopkg
+.mojo/
+
+# Data Files (exclude sensitive data)
+data/raw/
+data/processed/
+!data/.gitkeep
+
+# Backup Files
+*.bak
+*.backup
+backup/
+
+# Docker Development
+.dockerignore
+
+# IDE and Editors
+.vscode/settings.json
+.idea/workspace.xml

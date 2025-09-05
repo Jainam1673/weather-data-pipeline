@@ -71,47 +71,6 @@
                    └─────────────────┘
 ```
 
-## 🏗️ Professional Project Structure
-
-```
-life/
-├── 📁 src/                          # Source code
-│   ├── 📁 api/                      # FastAPI backend
-│   │   ├── server.py                # Main API server
-│   │   └── __init__.py              # API module
-│   ├── 📁 dashboard/                # Streamlit frontend
-│   │   ├── app.py                   # Dashboard application
-│   │   └── __init__.py              # Dashboard module
-│   ├── 📁 data/                     # Data management
-│   │   ├── database.py              # Database operations
-│   │   ├── weather_data.db          # SQLite database
-│   │   └── __init__.py              # Data module
-│   ├── 📁 processors/               # High-performance processing
-│   │   ├── weather_processor.mojo   # Mojo SIMD processor
-│   │   └── __init__.py              # Processors module
-│   └── __init__.py                  # Main source module
-├── 📁 tests/                        # Test suite
-│   └── test_api_server.py           # API tests
-├── 📁 docs/                         # Documentation
-│   ├── API.md                       # API documentation
-│   ├── INSTALL.md                   # Installation guide
-│   └── README.md                    # Detailed project docs
-├── 📁 scripts/                      # Automation scripts
-│   ├── setup.sh                     # Environment setup
-│   ├── start_pipeline.sh            # Pipeline starter
-│   └── test_pipeline.sh             # Testing script
-├── 📁 config/                       # Configuration files
-│   ├── pixi.toml                    # Pixi environment
-│   └── pixi.lock                    # Locked dependencies
-├── 📁 logs/                         # Application logs
-├── 📁 data/                         # Data storage
-├── main.py                          # Professional entry point
-├── requirements.txt                 # Python dependencies
-├── Dockerfile                       # Container definition
-├── docker-compose.yml               # Multi-service deployment
-└── .gitignore                       # Git ignore rules
-```
-
 ## 📋 Prerequisites
 
 - **Python 3.8+**
@@ -127,58 +86,30 @@ git clone <repository-url>
 cd life
 ```
 
-### 2. Setup Environment
-
-#### Option A: Pixi Environment (Recommended)
+### 2. Install Dependencies
 ```bash
-# Install pixi if not installed
-curl -fsSL https://pixi.sh/install.sh | bash
+# Install Python packages
+pip install fastapi uvicorn streamlit pandas plotly requests sqlalchemy
 
-# Setup project
-chmod +x scripts/setup.sh
-./scripts/setup.sh
-
-# Start pipeline
-./scripts/start_pipeline.sh
-```
-
-#### Option B: Python Virtual Environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+# Install Mojo (if available)
+# Follow instructions at https://docs.modular.com/mojo/
 ```
 
 ### 3. Start Services
 
-#### Using Main Entry Point (Professional)
+#### Option A: Use Start Script (Recommended)
 ```bash
-# Start API Server
-python main.py api
-
-# Start Dashboard (new terminal)
-python main.py dashboard
-
-# Run Data Processing
-python main.py process
-
-# Run Tests
-python main.py test
+chmod +x start_pipeline.sh
+./start_pipeline.sh
 ```
 
-#### Using Scripts (Alternative)
-```bash
-# Start complete pipeline
-./scripts/start_pipeline.sh
-```
-
-#### Manual Start (Development)
+#### Option B: Manual Start
 ```bash
 # Terminal 1: Start API Server
-uvicorn src.api.server:app --reload
+python api.py
 
 # Terminal 2: Start Dashboard (new terminal)
-streamlit run src/dashboard/app.py
+streamlit run streamlit_app.py
 ```
 
 ### 4. Access Dashboard

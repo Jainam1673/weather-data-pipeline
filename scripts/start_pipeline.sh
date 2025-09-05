@@ -64,7 +64,7 @@ start_streamlit() {
 # Function to test Mojo processor in pixi environment
 test_mojo() {
     echo "🔥 Testing Mojo data processor in pixi environment..."
-    if [ -f "data_processor.mojo" ]; then
+    if [ -f "src/processors/weather_processor.mojo" ]; then
         pixi run test-mojo > logs/mojo_test.log 2>&1
         if [ $? -eq 0 ]; then
             echo "✅ Mojo processor test completed successfully"
@@ -136,8 +136,8 @@ cleanup() {
     fi
     
     # Kill any remaining processes started by pixi
-    pkill -f "uvicorn.*api:app" 2>/dev/null
-    pkill -f "streamlit.*streamlit_app.py" 2>/dev/null
+    pkill -f "uvicorn.*api" 2>/dev/null
+    pkill -f "streamlit.*app.py" 2>/dev/null
     
     echo "✅ Cleanup completed"
     echo ""
