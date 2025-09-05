@@ -1,0 +1,245 @@
+[project]
+name = "weather-data-pipeline"
+version = "2.0.0"
+description = "Advanced Weather Data Pipeline with ML capabilities and high-performance processing"
+readme = "README.md"
+authors = [
+    {name = "Jainam Jadav", email = "jainam@example.com"}
+]
+license = {text = "MIT"}
+keywords = ["weather", "data", "pipeline", "machine-learning", "fastapi", "streamlit"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.11"
+
+# Core production dependencies
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "streamlit>=1.28.1",
+    "pandas>=2.1.3",
+    "numpy>=1.24.3",
+    "plotly>=5.17.0",
+    "requests>=2.31.0",
+    "httpx>=0.25.2",
+    "scikit-learn>=1.3.2",
+    "scipy>=1.11.4",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "structlog>=23.2.0",
+    "python-multipart>=0.0.6",
+    "gunicorn>=21.2.0"
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.1",
+    "pre-commit>=3.5.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.6",
+    "ipykernel>=6.26.0"
+]
+
+# Testing dependencies
+test = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.25.2",
+    "pytest-mock>=3.12.0"
+]
+
+# Documentation dependencies
+docs = [
+    "sphinx>=7.2.6",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0"
+]
+
+# Performance monitoring
+monitoring = [
+    "prometheus-client>=0.19.0",
+    "opentelemetry-api>=1.21.0",
+    "opentelemetry-sdk>=1.21.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Jainam1673/weather-data-pipeline"
+"Repository" = "https://github.com/Jainam1673/weather-data-pipeline"
+"Documentation" = "https://github.com/Jainam1673/weather-data-pipeline/blob/main/README.md"
+"Bug Tracker" = "https://github.com/Jainam1673/weather-data-pipeline/issues"
+
+[project.scripts]
+weather-api = "src.api.server:main"
+weather-dashboard = "src.dashboard.app:main"
+weather-processor = "src.processors.pipeline:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.version]
+path = "src/__init__.py"
+
+# ===========================
+# uv Configuration
+# ===========================
+[tool.uv]
+# Development dependencies for uv
+dev-dependencies = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.1",
+    "pre-commit>=3.5.0"
+]
+
+# Python version constraint
+python = ">=3.11"
+
+# Index configuration
+index-url = "https://pypi.org/simple"
+
+# Cache configuration
+cache-dir = ".uv-cache"
+
+# Resolution strategy
+resolution = "highest"
+
+# Compile bytecode for performance
+compile-bytecode = true
+
+# ===========================
+# Black Configuration
+# ===========================
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# ===========================
+# isort Configuration
+# ===========================
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["src"]
+
+# ===========================
+# mypy Configuration
+# ===========================
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pandas.*",
+    "numpy.*",
+    "plotly.*",
+    "sklearn.*",
+    "scipy.*"
+]
+ignore_missing_imports = true
+
+# ===========================
+# pytest Configuration
+# ===========================
+[tool.pytest.ini_options]
+minversion = "7.4"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "unit: marks tests as unit tests",
+    "integration: marks tests as integration tests",
+    "api: marks tests as API tests",
+    "dashboard: marks tests as dashboard tests",
+]
+
+# ===========================
+# Coverage Configuration
+# ===========================
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__init__.py",
+    "*/conftest.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"

@@ -1,27 +1,142 @@
-# Development Override for Docker Compose
-# ======================================
-# This file automatically applies when running docker-compose up
-# Provides hot-reload and development-friendly settings
-
-version: '3.8'
+# Development Override - Docker Compose
+# ====================================
+# Use: docker-compose up (automatically loads this override)
+# For production: docker-compose -f docker-compose.yml up
 
 services:
+  # ===========================
+  # API Server - Development
+  # ===========================
   weather-api:
     build:
       target: development
-    volumes:
-      - .:/app
-      - /app/__pycache__
+    
+    # Enable file watching and debugging
     environment:
       - ENVIRONMENT=development
       - DEBUG=true
-    command: ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+      - RELOAD=true
+      - LOG_LEVEL=debug
+    
+    # Development volume mounts for hot reload
+    volumes:
+      - ./src:/app/src:ro
+      - ./main.py:/app/main.py:ro
+      - ./pyproject.toml:/app/pyproject.toml:ro
+      - weather-data:/app/data:rw
+      - weather-logs:/app/logs:rw
+      - ./.uv-cache:/opt/uv-cache:rw
+    
+    # Remove read-only restrictions for development
+    read_only: false
+    security_opt: []
+    tmpfs: []
+    
+    # Relaxed resource limits for development
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 4G
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    
+    # Development command with hot reload
+    command: ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--log-level", "debug"]
 
+  # ===========================
+  # Dashboard - Development
+  # ===========================
   weather-dashboard:
     build:
       target: development
-    volumes:
-      - .:/app
+    
+    # Enable debugging
     environment:
       - ENVIRONMENT=development
+      - STREAMLIT_SERVER_RUN_ON_SAVE=true
+      - STREAMLIT_SERVER_FILE_WATCHER_TYPE=auto
+      - STREAMLIT_SERVER_ENABLE_CORS=true
+      - DEBUG=true
+    
+    # Development volume mounts
+    volumes:
+      - ./src:/app/src:ro
+      - ./main.py:/app/main.py:ro
+      - weather-logs:/app/logs:rw
+    
+    # Remove security restrictions for development
+    read_only: false
+    security_opt: []
+    tmpfs: []
+    
+    # Relaxed resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    
+    # Development command
     command: ["streamlit", "run", "src/dashboard/app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
+
+  # ===========================
+  # Development Tools
+  # ===========================
+  # Jupyter Notebook for development
+  jupyter:
+    build:
+      context: .
+      target: development
+    container_name: weather-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=weather-dev-token
+    volumes:
+      - ./src:/app/src:rw
+      - ./notebooks:/app/notebooks:rw
+      - weather-data:/app/data:rw
+      - ./.uv-cache:/opt/uv-cache:rw
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=weather-dev-token"]
+    networks:
+      - weather-network
+    labels:
+      com.weather-pipeline.service: "jupyter"
+      com.weather-pipeline.environment: "development"
+
+  # Database browser for development
+  db-browser:
+    image: coleifer/sqlite-web:latest
+    container_name: weather-db-browser
+    ports:
+      - "8080:8080"
+    volumes:
+      - weather-data:/data:ro
+    command: ["sqlite_web", "/data/weather_data.db", "--host", "0.0.0.0", "--port", "8080"]
+    networks:
+      - weather-network
+    labels:
+      com.weather-pipeline.service: "db-browser"
+      com.weather-pipeline.environment: "development"
+
+# Development-specific volumes
+volumes:
+  weather-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data
+  
+  weather-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/logs
