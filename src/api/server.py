@@ -582,17 +582,19 @@ async def get_system_status():
             "last_check": datetime.now().isoformat()
         }
 
-if __name__ == "__main__":
+def main() -> None:
     import uvicorn
-    
-    print("🌤️ Starting Advanced Weather Data Pipeline API v2.0")
-    print("📊 Features: Mojo SIMD processing, ML predictions, pattern analysis")
-    print("🚀 Enhanced with machine learning capabilities")
-    
     uvicorn.run(
-        "api:app",
+        "src.api.server:app",
         host="0.0.0.0",
         port=8000,
         reload=True,
-        log_level="info"
+        log_level="info",
     )
+
+
+if __name__ == "__main__":
+    print("🌤️ Starting Advanced Weather Data Pipeline API v2.0")
+    print("📊 Features: Mojo SIMD processing, ML predictions, pattern analysis")
+    print("🚀 Enhanced with machine learning capabilities")
+    main()
