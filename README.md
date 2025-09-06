@@ -250,7 +250,7 @@ streamlit run src/dashboard/app.py
 
 ### Run API Tests
 ```bash
-python test_api.py
+pytest -q
 ```
 
 ### Run Full Pipeline Test
@@ -311,7 +311,7 @@ export SIMD_ENABLED=true
 curl http://localhost:8000/health
 
 # Restart API server
-python api.py
+python main.py api
 ```
 
 #### Mojo Not Found
@@ -326,7 +326,7 @@ python api.py
 streamlit cache clear
 
 # Restart dashboard
-streamlit run streamlit_app.py
+python main.py dashboard
 ```
 
 #### Database Issues
@@ -355,14 +355,13 @@ sqlite3 weather_data.db "VACUUM;"
 ### Code Structure
 ```
 life/
-├── api.py                 # Enhanced FastAPI backend
-├── streamlit_app.py       # Advanced dashboard
-├── data_processor.mojo    # Mojo processing engine
-├── database.py           # Database operations
-├── weather_data.db       # SQLite database
-├── start_pipeline.sh     # Quick start script
-├── test_api.py          # API tests
-└── README.md            # This documentation
+├── src/api/server.py      # FastAPI backend
+├── src/dashboard/app.py   # Streamlit dashboard
+├── src/processors/weather_processor.mojo  # Mojo processing engine
+├── src/data/database.py   # Database operations
+├── tests/test_api_server.py # API tests
+├── main.py                # Unified entrypoint
+└── README.md              # This documentation
 ```
 
 ### Key Components
