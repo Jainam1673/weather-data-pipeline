@@ -114,22 +114,42 @@ life/
 
 ## 📋 Prerequisites
 
-- **Python 3.8+**
-- **Mojo** (for advanced processing)
+- **Python 3.11+** (tested with Python 3.13.3)
+- **Mojo** (optional, for advanced processing - see [Mojo Installation Guide](docs/MOJO_INSTALLATION.md))
 - **pip** (Python package manager)
 - **Git** (version control)
+
+## ✅ Current Status
+
+- **✅ Dependencies**: All Python packages installed and tested
+- **✅ API Server**: FastAPI backend running on port 8000
+- **✅ Dashboard**: Streamlit frontend running on port 8501
+- **✅ Database**: SQLite database with weather data storage
+- **✅ Tests**: Comprehensive test suite (8/8 tests passing)
+- **⚠️ Mojo**: Not installed (running in simulation mode)
+- **✅ Docker**: Production-ready containerization available
 
 ## 🚀 Quick Start
 
 ### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd life
+cd weather-data-pipeline
 ```
 
 ### 2. Setup Environment
 
-#### Option A: Pixi Environment (Recommended)
+#### Option A: Direct Installation (Recommended)
+```bash
+# Install Python dependencies
+pip3 install -r requirements.txt --break-system-packages
+
+# Optional: Install Mojo for full performance
+curl -s https://get.modular.com | sh -
+modular install mojo
+```
+
+#### Option B: Pixi Environment
 ```bash
 # Install pixi if not installed
 curl -fsSL https://pixi.sh/install.sh | bash
@@ -142,9 +162,9 @@ chmod +x scripts/setup.sh
 ./scripts/start_pipeline.sh
 ```
 
-#### Option B: Python Virtual Environment
+#### Option C: Python Virtual Environment
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```

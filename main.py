@@ -68,7 +68,7 @@ def run_tests():
     """Run the test suite."""
     print("🧪 Running Test Suite...")
     os.chdir(PROJECT_ROOT)
-    subprocess.run(["python", "-m", "pytest", "tests/", "-v"])
+    subprocess.run(["python3", "-m", "pytest", "tests/", "-v"])
 
 
 def main():
