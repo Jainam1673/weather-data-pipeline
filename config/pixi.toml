@@ -14,24 +14,24 @@ install = "echo 'Dependencies installed via pixi'"
 start-pipeline = { depends-on = ["init-db", "start-api", "start-ui"] }
 
 # Data processing tasks
-test-mojo = "mojo data_processor.mojo"
-generate-data = "python -c 'import requests; requests.post(\"http://localhost:8000/generate-data\", json={\"num_points\": 1000})'"
+test-mojo = "cd .. && mojo src/processors/weather_processor.mojo"
+generate-data = "cd .. && python -c 'import requests; requests.post(\"http://localhost:8000/generate-data\", json={\"num_points\": 1000})'"
 
 # Server tasks
-start-api = "uvicorn api:app --host 0.0.0.0 --port 8000 --reload"
-start-ui = "streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0"
+start-api = "cd .. && uvicorn src.api.server:app --host 0.0.0.0 --port 8000 --reload"
+start-ui = "cd .. && streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0"
 
 # Database tasks
-init-db = "python database.py"
-reset-db = "rm -f weather_data.db && python database.py"
+init-db = "cd .. && python src/data/database.py"
+reset-db = "cd .. && rm -f weather_data.db && python src/data/database.py"
 
 # Testing and health
-health-check = "curl -s http://localhost:8000/health | python -m json.tool"
-test-api = "curl -s http://localhost:8000/ | python -m json.tool"
+health-check = "cd .. && curl -s http://localhost:8000/health | python -m json.tool"
+test-api = "cd .. && curl -s http://localhost:8000/ | python -m json.tool"
 
 # Cleanup tasks
-clean-logs = "rm -rf logs/*.log"
-clean-data = "rm -f weather_data.db"
+clean-logs = "cd .. && rm -rf logs/*.log"
+clean-data = "cd .. && rm -f weather_data.db"
 clean-all = { depends-on = ["clean-logs", "clean-data"] }
 
 [dependencies]
@@ -47,3 +47,5 @@ requests = "*"
 python-multipart = "*"
 pydantic = "*"
 scipy = "*"
+pytest = "*"
+pytest-cov = "*"

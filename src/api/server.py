@@ -145,61 +145,43 @@ async def fetch_enhanced_weather(request: WeatherRequest):
     try:
         logger.info(f"Fetching enhanced weather data for {request.location_name} ({request.latitude}, {request.longitude})")
         
-        # First, get real weather data from Open-Meteo API
-        url = "https://api.open-meteo.com/v1/forecast"
-        params = {
-            "latitude": request.latitude,
-            "longitude": request.longitude,
-            "current": "temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,precipitation,cloudcover,visibility,uv_index,apparent_temperature",
-            "hourly": "temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m,precipitation,cloudcover,visibility,uv_index,apparent_temperature,dewpoint_2m",
-            "forecast_days": request.days,
-            "timezone": "auto"
-        }
+        command = [
+            "mojo", "src/processors/weather_processor.mojo",
+            "--action", "fetch",
+            "--latitude", str(request.latitude),
+            "--longitude", str(request.longitude),
+            "--days", str(request.days),
+            "--quiet"
+        ]
         
-        response = requests.get(url, params=params, timeout=10)
-        if response.status_code != 200:
-            raise HTTPException(status_code=503, detail="Weather service unavailable")
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, stderr = await process.communicate()
+
+        if process.returncode != 0:
+            logger.error(f"Mojo script execution failed: {stderr.decode()}")
+            raise HTTPException(status_code=500, detail=f"Mojo script error: {stderr.decode()}")
+
+        try:
+            weather_data = json.loads(stdout.decode())
+        except json.JSONDecodeError:
+            logger.error(f"Failed to decode JSON from Mojo script: {stdout.decode()}")
+            raise HTTPException(status_code=500, detail="Failed to parse weather data.")
+
+        db.store_weather_data(request.latitude, request.longitude, {"data": weather_data})
         
-        api_data = response.json()
-        
-        # Process with enhanced Mojo simulation
-        weather_data = {
+        return {
             "location": {
                 "name": request.location_name,
                 "latitude": request.latitude,
                 "longitude": request.longitude,
-                "timezone": api_data.get("timezone", "UTC")
             },
-            "current_weather": api_data.get("current", {}),
-            "hourly_forecast": api_data.get("hourly", {}),
-            "data_points": len(api_data.get("hourly", {}).get("time", [])),
-            "enhanced_parameters": [
-                "temperature", "humidity", "pressure", "wind_speed", 
-                "wind_direction", "rainfall", "cloudiness", "visibility",
-                "uv_index", "feels_like", "dew_point"
-            ],
-            "processing_status": "✅ Enhanced processing completed",
-            "performance": {
-                "processing_time_ms": 45.2,
-                "simd_acceleration": "✅ Enabled",
-                "data_source": "Open-Meteo API"
-            },
-            "api_info": {
-                "version": "2.0.0",
-                "timestamp": datetime.now().isoformat(),
-                "request_id": f"req_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                "processing_engine": "Mojo v25.6+"
-            }
+            "enhanced_data": weather_data
         }
         
-        # Store in database
-        db.store_weather_data(request.latitude, request.longitude, weather_data)
-        
-        return weather_data
-        
-    except requests.RequestException as e:
-        logger.error(f"Weather API error: {str(e)}")
-        raise HTTPException(status_code=503, detail="Weather service unavailable")
     except Exception as e:
         logger.error(f"Enhanced weather fetch error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to fetch weather data: {str(e)}")
@@ -210,62 +192,41 @@ async def predict_weather_trends(request: PredictionRequest):
     try:
         logger.info(f"Generating weather predictions for {request.location_name}")
         
-        # Get recent data for trend analysis
+        command = [
+            "mojo", "src/processors/weather_processor.mojo",
+            "--action", "predict",
+            "--latitude", str(request.latitude),
+            "--longitude", str(request.longitude),
+            "--hours", str(request.hours_ahead),
+            "--quiet"
+        ]
+        
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, stderr = await process.communicate()
+
+        if process.returncode != 0:
+            logger.error(f"Mojo script execution failed: {stderr.decode()}")
+            raise HTTPException(status_code=500, detail=f"Mojo script error: {stderr.decode()}")
+
         try:
-            url = "https://api.open-meteo.com/v1/forecast"
-            params = {
-                "latitude": request.latitude,
-                "longitude": request.longitude,
-                "hourly": "temperature_2m,relative_humidity_2m,surface_pressure",
-                "forecast_days": 1,
-                "timezone": "auto"
-            }
-            response = requests.get(url, params=params, timeout=10)
-            base_data = response.json() if response.status_code == 200 else {}
-        except:
-            base_data = {}
-        
-        # Generate predictions based on trends
-        current_temp = base_data.get("hourly", {}).get("temperature_2m", [20.0])[0] if base_data else 20.0
-        current_humidity = base_data.get("hourly", {}).get("relative_humidity_2m", [65.0])[0] if base_data else 65.0
-        current_pressure = base_data.get("hourly", {}).get("surface_pressure", [1013.25])[0] if base_data else 1013.25
-        
-        predictions = {
+            predictions = json.loads(stdout.decode())
+        except json.JSONDecodeError:
+            logger.error(f"Failed to decode JSON from Mojo script: {stdout.decode()}")
+            raise HTTPException(status_code=500, detail="Failed to parse prediction data.")
+
+        return {
             "location": {
                 "name": request.location_name,
                 "latitude": request.latitude,
                 "longitude": request.longitude
             },
             "prediction_horizon": f"{request.hours_ahead} hours",
-            "model_info": {
-                "type": "Linear Regression Trends",
-                "accuracy": "85.2%",
-                "last_trained": "2025-09-05T10:00:00Z",
-                "features": ["temperature", "humidity", "pressure", "wind_patterns"]
-            },
-            "predictions": [
-                {
-                    "timestamp": (datetime.now() + timedelta(hours=i)).isoformat(),
-                    "temperature": current_temp + (i * 0.2),
-                    "humidity": current_humidity - (i * 0.5),
-                    "pressure": current_pressure + (i * 0.1),
-                    "confidence": max(0.6, 0.95 - (i * 0.02))
-                } for i in range(1, request.hours_ahead + 1)
-            ],
-            "trends": {
-                "temperature_trend": "gradually_increasing",
-                "humidity_trend": "decreasing",
-                "pressure_trend": "stable",
-                "weather_outlook": "improving_conditions"
-            },
-            "processing_info": {
-                "engine": "Mojo SIMD",
-                "processing_time_ms": 12.8,
-                "timestamp": datetime.now().isoformat()
-            }
+            "predictions": predictions
         }
-        
-        return predictions
         
     except Exception as e:
         logger.error(f"Prediction error: {str(e)}")
@@ -277,52 +238,30 @@ async def analyze_weather_patterns(request: DataAnalysisRequest):
     try:
         logger.info(f"Analyzing weather patterns - Type: {request.analysis_type}")
         
-        analysis = {
-            "analysis_type": request.analysis_type,
-            "time_range": {
-                "start": request.start_time or (datetime.now() - timedelta(days=7)).isoformat(),
-                "end": request.end_time or datetime.now().isoformat()
-            },
-            "patterns_detected": {
-                "temperature_cycles": {
-                    "daily_pattern": "Normal diurnal cycle detected",
-                    "anomalies": [
-                        {
-                            "type": "temperature_spike",
-                            "timestamp": "2025-09-04T14:30:00Z",
-                            "deviation": "+8.5°C from average",
-                            "severity": "moderate"
-                        }
-                    ]
-                },
-                "precipitation_patterns": {
-                    "total_rainfall": 15.4,
-                    "rainy_hours": 18,
-                    "pattern": "scattered_showers",
-                    "prediction": "clearing_trend"
-                },
-                "wind_analysis": {
-                    "dominant_direction": "southwest",
-                    "average_speed": 12.3,
-                    "gusts_detected": 3,
-                    "stability": "moderate"
-                }
-            },
-            "weather_indices": {
-                "comfort_index": 76.8,
-                "severity_score": 23.2,
-                "stability_rating": "good",
-                "forecast_confidence": 89.5
-            },
-            "processing_info": {
-                "algorithm": "Advanced Pattern Recognition",
-                "data_points_analyzed": 1680,
-                "processing_time_ms": 156.7,
-                "mojo_acceleration": "✅ SIMD optimized"
-            }
-        }
+        command = [
+            "mojo", "src/processors/weather_processor.mojo",
+            "--action", "analyze",
+            "--quiet"
+        ]
         
-        return analysis
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, stderr = await process.communicate()
+
+        if process.returncode != 0:
+            logger.error(f"Mojo script execution failed: {stderr.decode()}")
+            raise HTTPException(status_code=500, detail=f"Mojo script error: {stderr.decode()}")
+
+        try:
+            analysis_data = json.loads(stdout.decode())
+        except json.JSONDecodeError:
+            logger.error(f"Failed to decode JSON from Mojo script: {stdout.decode()}")
+            raise HTTPException(status_code=500, detail="Failed to parse analysis data.")
+
+        return analysis_data
         
     except Exception as e:
         logger.error(f"Pattern analysis error: {str(e)}")
@@ -334,40 +273,31 @@ async def run_performance_benchmark(iterations: int = Query(100, ge=10, le=10000
     try:
         logger.info(f"Running performance benchmark with {iterations} iterations")
         
-        benchmark = {
-            "benchmark_info": {
-                "iterations": iterations,
-                "data_points_per_iteration": 1000,
-                "total_operations": iterations * 1000
-            },
-            "results": {
-                "mojo": {
-                    "processing_time_seconds": 0.234,
-                    "operations_per_second": (iterations * 1000) / 0.234,
-                    "memory_usage_mb": 45.2,
-                    "simd_acceleration": "✅ Enabled"
-                },
-                "python_baseline": {
-                    "processing_time_seconds": 2.876,
-                    "operations_per_second": (iterations * 1000) / 2.876,
-                    "memory_usage_mb": 128.7,
-                    "optimization": "NumPy vectorized"
-                }
-            },
-            "performance_gain": {
-                "speed_improvement": "12.3x faster",
-                "memory_efficiency": "64.9% less memory",
-                "overall_score": "Excellent"
-            },
-            "system_info": {
-                "mojo_version": "25.6+",
-                "cpu_cores": 8,
-                "simd_support": "AVX2",
-                "timestamp": datetime.now().isoformat()
-            }
-        }
+        command = [
+            "mojo", "src/processors/weather_processor.mojo",
+            "--action", "benchmark",
+            "--iterations", str(iterations),
+            "--quiet"
+        ]
         
-        return benchmark
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, stderr = await process.communicate()
+
+        if process.returncode != 0:
+            logger.error(f"Mojo script execution failed: {stderr.decode()}")
+            raise HTTPException(status_code=500, detail=f"Mojo script error: {stderr.decode()}")
+
+        try:
+            benchmark_data = json.loads(stdout.decode())
+        except json.JSONDecodeError:
+            logger.error(f"Failed to decode JSON from Mojo script: {stdout.decode()}")
+            raise HTTPException(status_code=500, detail="Failed to parse benchmark data.")
+
+        return benchmark_data
         
     except Exception as e:
         logger.error(f"Benchmark error: {str(e)}")
